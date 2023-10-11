@@ -78,7 +78,21 @@ const Gameboard = () => { // will take player/comp name
 
 };
 
+const Player = () => {
+
+    let player = Gameboard()
+
+    const attackEnemy = (enemy, pos1, pos2) => {
+        enemy.player.receiveAttack(pos1, pos2)
+    }
+
+    // some method that can attack other player?
+    // it's params may be the target player, their board etc.
+
+    return { player, attackEnemy }
+}
 
 
-export { Ship, Gameboard }
+
+export { Ship, Gameboard, Player }
 

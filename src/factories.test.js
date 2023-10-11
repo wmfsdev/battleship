@@ -1,5 +1,5 @@
 
-import { Gameboard, Ship } from './factories.js';
+import { Gameboard, Ship, Player } from './factories.js';
 
 
 describe('Ship', () => {
@@ -14,7 +14,7 @@ describe('Ship', () => {
         expect(ship.length).toBe(3)
     })
 
-    it('can hit', () => {
+    it('can hit, and increases hits by 1', () => {
         expect(ship.hit()).toBe(1)
     })
 
@@ -34,33 +34,31 @@ describe('Ship', () => {
 
 describe('Gameboard', () => {
 
-    let player;
+    let board;
 
     beforeEach(() => {
-        player = Gameboard()
+        board = Gameboard()
     })
 
     it('can place ship of length one on board', () => {   // incoming command - change, no return
-        player.placeShip([[0, 0]], Ship(1))
-        expect(player.getBoard()[0][0]).toBeInstanceOf(Object)
+        board.placeShip([[0, 0]], Ship(1))
+        expect(board.getBoard()[0][0]).toBeInstanceOf(Object)
     })
 
     it('can place ship of length three on board', () => {
-        player.placeShip([[0, 0],[1, 1]], Ship(2) )
-        expect(player.getBoard()[1][1]).toBeInstanceOf(Object)
-        expect(player.getBoard()[0][0]).toBeInstanceOf(Object)
+        board.placeShip([[0, 0],[1, 1]], Ship(2) )
+        expect(board.getBoard()[1][1]).toBeInstanceOf(Object)
+        expect(board.getBoard()[0][0]).toBeInstanceOf(Object)
     })
 
-
-
-    it('should send ship the hit message', () => {
+    it('can send hit message to the ship', () => {
         // Arrange
         let ship = Ship(3)
         const hitSpy = jest.spyOn(ship, 'hit')
       
         // Act
-        player.placeShip([[0, 0]], ship)
-        player.receiveAttack(0, 0)
+        board.placeShip([[0, 0]], ship)
+        board.receiveAttack(0, 0)
       
         // Assert
         expect(hitSpy).toBeCalled()
@@ -68,35 +66,59 @@ describe('Gameboard', () => {
 
 
     it('records missed shots', () => {
-        player.placeShip([[1, 0]])
-        player.receiveAttack(0, 0)
-        expect(player.getShotsFired()).toContainEqual([0, 0])
+        board.placeShip([[1, 0]])
+        board.receiveAttack(0, 0)
+        expect(board.getShotsFired()).toContainEqual([0, 0])
     })
 
     // it('has sunk a ship', () => { // REDUNDANT - already tested isSunk() in Ship suite
                                      // *and* mock for hit() in receiveAttack() 
-    //     player.placeShip(0, 0, 1)
-    //     player.receiveAttack(0, 0)
-    //     expect(player.getBoard()[0][0].isSunk()).toBe(true)
+    //     board.placeShip(0, 0, 1)
+    //     board.receiveAttack(0, 0)
+    //     expect(board.getBoard()[0][0].isSunk()).toBe(true)
     // })
     
     
     it('has all sunken ships on board (1 ship)', () => {
-        player.placeShip([[0, 0],[0, 1]], Ship(2))
-        player.receiveAttack(0, 0)
-        player.receiveAttack(0, 1)
-        expect(player.sunkenStatus()).toBe(true)
+        board.placeShip([[0, 0],[0, 1]], Ship(2))
+        board.receiveAttack(0, 0)
+        board.receiveAttack(0, 1)
+        expect(board.sunkenStatus()).toBe(true)
     })
 
         
     it('has all sunken ships on board (2 ships)', () => {
-        player.placeShip([[2, 2],[2, 3]], Ship(2))
-        player.placeShip([[0, 0],[0, 1]], Ship(2))
-        player.receiveAttack(0, 0)
-        player.receiveAttack(0, 1)
-        player.receiveAttack(2, 2)
-        player.receiveAttack(2, 3)
-        expect(player.sunkenStatus()).toBe(true)
+        // Arrange
+        board.placeShip([[0, 0],[0, 1]], Ship(2))
+        board.placeShip([[2, 2],[2, 3]], Ship(2))
+        // Act
+        board.receiveAttack(0, 0)
+        board.receiveAttack(0, 1)
+        board.receiveAttack(2, 2)
+        board.receiveAttack(2, 3)
+        // Assert
+        expect(board.sunkenStatus()).toBe(true)
     })
 
 })
+
+// --- PLAYERS ---
+
+describe('Player', () => {
+
+    let playerOne;
+    let playerTwo;
+
+    beforeEach(() => {
+        playerOne = Player()
+        playerTwo = Player()
+    });
+
+    it('can attack enemy gameboard', () => {
+        const enemyPlayer = playerTwo.player
+        const receiveAttackSpy = jest.spyOn(enemyPlayer, 'receiveAttack')
+        playerOne.attackEnemy(playerTwo, 0,0)
+        expect(receiveAttackSpy).toBeCalled()
+    })
+
+});
