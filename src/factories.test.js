@@ -117,8 +117,30 @@ describe('Player', () => {
     it('can attack enemy gameboard', () => {
         const enemyPlayer = playerTwo.player
         const receiveAttackSpy = jest.spyOn(enemyPlayer, 'receiveAttack')
-        playerOne.attackEnemy(playerTwo, 0,0)
+        playerOne.attackEnemy(playerTwo, 0, 0)
         expect(receiveAttackSpy).toBeCalled()
+    })
+
+    it('can generate list of viable targets', () => { // possibly redundant
+        playerOne.generateTargets()
+        expect(playerOne.getViableTargets()).toHaveLength(100)
+    })
+
+    it('(ai) can successfully attack opponent', () => { // mock
+
+        const enemyPlayer = playerTwo.player
+        const aiAttackSpy = jest.spyOn(enemyPlayer, 'receiveAttack')
+
+        playerOne.generateTargets()
+        playerOne.aiMove(playerTwo)
+
+        expect(aiAttackSpy).toBeCalled()
+    })
+
+    it('can remove correct target from target list', () => {
+        playerOne.generateTargets()
+        playerOne.removeViableTarget([0,0])
+        expect(playerOne.getViableTargets()).not.toContain([0,0])
     })
 
 });

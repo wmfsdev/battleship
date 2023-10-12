@@ -32,14 +32,16 @@ const Gameboard = () => { // will take player/comp name
     [true, true, true, true, true, true, true, true, true, true],
     [true, true, true, true, true, true, true, true, true, true],
     [true, true, true, true, true, true, true, true, true, true],
-    [true, true, true, true, true, true, true, true, true, true] ]
+    [true, true, true, true, true, true, true, true, true, true],
+    [true, true, true, true, true, true, true, true, true, true],
+    [true, true, true, true, true, true, true, true, true, true] ];
 
     // const occupiedPositions = [] probably don't need since board already marked
-    const hitShips = []
+    const hitShips = [];
 
-    const viable = []
-    const shipList = []
-    const shotsFired = []
+    const viablePositions = [];
+    const shipList = [];
+    const shotsFired = [];
 
     const sunkenStatus = () => {
         for (let i = 0 ; i < shipList.length ; i++) {
@@ -48,7 +50,7 @@ const Gameboard = () => { // will take player/comp name
             }
         }
         return true
-    }
+    };
 
     // private fn
     // const getRandomInt = () => {
@@ -60,7 +62,7 @@ const Gameboard = () => { // will take player/comp name
             board[position[0]][position[1]] = ship
         });
         shipList.push(ship)
-    }
+    };
 
     const receiveAttack = (x, y) => {
         if (board[x][y] instanceof Object) {
@@ -69,10 +71,10 @@ const Gameboard = () => { // will take player/comp name
         }
         else shotsFired.push([x, y])
 
-    }
+    };
 
-    const getBoard = () => board
-    const getShotsFired = () => shotsFired
+    const getBoard = () => board;
+    const getShotsFired = () => shotsFired;
 
     return { placeShip, getBoard, receiveAttack, getShotsFired, sunkenStatus }
 
@@ -80,16 +82,39 @@ const Gameboard = () => { // will take player/comp name
 
 const Player = () => {
 
-    let player = Gameboard()
+    let player = Gameboard();
 
-    const attackEnemy = (enemy, pos1, pos2) => {
-        enemy.player.receiveAttack(pos1, pos2)
-    }
+    const attackEnemy = (enemy, coodOne, coodTwo) => {
+        enemy.player.receiveAttack(coodOne, coodTwo)
+    };
 
-    // some method that can attack other player?
-    // it's params may be the target player, their board etc.
+    const viableTargets = [];
 
-    return { player, attackEnemy }
+    const random = () => { return Math.floor(Math.random() * viableTargets.length) }
+
+    const generateTargets = () => {
+        for (let i = 0 ; i < 10 ; i++) {
+            for (let j = 0 ; j < 10 ; j++) {
+                viableTargets.push([i,j])
+            }
+        } 
+    };
+
+    const removeViableTarget = (index) => {
+        viableTargets.splice(index, 1)
+    };
+
+    const aiMove = (enemy) => {
+        let randomIndex = random()
+        let target = viableTargets[randomIndex]
+        attackEnemy(enemy, target[0], target[1])
+        removeViableTarget(randomIndex)
+
+    };
+
+    const getViableTargets = () => viableTargets;
+
+    return { player, aiMove, generateTargets, getViableTargets, removeViableTarget, attackEnemy }
 }
 
 
