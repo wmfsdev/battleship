@@ -6,7 +6,10 @@
   "scripts": {
     "test": "jest",
     "watch": "jest --watch factories.test.js",
-    "build": "webpack"
+    "build": "webpack",
+    "web-watch": "webpack --watch"
+   
+    
   },
   "author": "me",
   "license": "ISC",

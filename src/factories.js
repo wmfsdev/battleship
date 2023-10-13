@@ -82,10 +82,10 @@ const Gameboard = () => { // will take player/comp name
 
 const Player = () => {
 
-    let player = Gameboard();
+    let location = Gameboard();
 
     const attackEnemy = (enemy, coodOne, coodTwo) => {
-        enemy.player.receiveAttack(coodOne, coodTwo)
+        enemy.location.receiveAttack(coodOne, coodTwo)
     };
 
     const viableTargets = [];
@@ -105,8 +105,8 @@ const Player = () => {
     };
 
     const aiMove = (enemy) => {
-        let randomIndex = random()
-        let target = viableTargets[randomIndex]
+        const randomIndex = random()
+        const target = viableTargets[randomIndex]
         attackEnemy(enemy, target[0], target[1])
         removeViableTarget(randomIndex)
 
@@ -114,7 +114,7 @@ const Player = () => {
 
     const getViableTargets = () => viableTargets;
 
-    return { player, aiMove, generateTargets, getViableTargets, removeViableTarget, attackEnemy }
+    return { location, aiMove, generateTargets, getViableTargets, removeViableTarget, attackEnemy }
 }
 
 
