@@ -36,7 +36,7 @@ const Gameboard = () => { // will take player/comp name
     [true, true, true, true, true, true, true, true, true, true],
     [true, true, true, true, true, true, true, true, true, true] ];
 
-    // const occupiedPositions = [] probably don't need since board already marked
+    const occupiedPositions = []
     const hitShips = [];
 
     const viablePositions = [];
@@ -62,6 +62,7 @@ const Gameboard = () => { // will take player/comp name
             board[position[0]][position[1]] = ship
         });
         shipList.push(ship)
+        occupiedPositions.push(shipPosition)
     };
 
     const receiveAttack = (x, y) => {
@@ -73,19 +74,21 @@ const Gameboard = () => { // will take player/comp name
 
     };
 
+    const getOccupiedPositions = () => occupiedPositions
+    const getShipList = () => shipList;
     const getBoard = () => board;
     const getShotsFired = () => shotsFired;
 
-    return { placeShip, getBoard, receiveAttack, getShotsFired, sunkenStatus }
+    return { getOccupiedPositions, getShipList, placeShip, getBoard, receiveAttack, getShotsFired, sunkenStatus }
 
 };
 
 const Player = () => {
 
-    let location = Gameboard();
+    let board = Gameboard();
 
     const attackEnemy = (enemy, coodOne, coodTwo) => {
-        enemy.location.receiveAttack(coodOne, coodTwo)
+        enemy.board.receiveAttack(coodOne, coodTwo)
     };
 
     const viableTargets = [];
@@ -114,7 +117,7 @@ const Player = () => {
 
     const getViableTargets = () => viableTargets;
 
-    return { location, aiMove, generateTargets, getViableTargets, removeViableTarget, attackEnemy }
+    return { board, aiMove, generateTargets, getViableTargets, removeViableTarget, attackEnemy }
 }
 
 

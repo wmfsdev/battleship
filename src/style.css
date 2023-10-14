@@ -1,0 +1,39 @@
+
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    padding: 50px;
+}
+
+.board {
+    border-width: 1px;
+    border-color: black;
+    border-style: solid;
+    height: 500px;
+    width: 500px;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+}
+
+.container {
+    display: flex;
+    gap: 50px;
+}
+
+.cell {
+    border-width: 1px;
+    border-color: rgba(0, 0, 0, 0.278);
+    border-style: solid;
+}
+
+
+.ship {
+    background-color: cadetblue;
+}

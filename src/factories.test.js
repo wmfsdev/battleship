@@ -15,19 +15,50 @@ describe('Ship', () => {
     })
 
     it('can hit, and increases hits by 1', () => {
-        expect(ship.hit()).toBe(1)
+        ship.hit()
+        expect(ship.getHits()).toBe(1)
     })
 
-    it('has not been sunk', () => {
+    it('can hit, and increases hits by 2', () => {
+        ship.hit()
+        ship.hit()
+        expect(ship.getHits()).toBe(2)
+    })    
+    
+    it('has not been sunk (no hits)', () => {
         expect(ship.isSunk()).toBe(false)
     })
 
-    it('has been sunk', () => {
+    it('(length 3), takes two hits and does not sink', () => {
+        ship.hit()
+        ship.hit()
+        expect(ship.isSunk()).toBe(false)
+    })
+
+    it('(length 3), takes 3 hits and sinks', () => {
         ship.hit()
         ship.hit()
         ship.hit()
         expect(ship.isSunk()).toBe(true)
     });
+
+    it('(length 4) different length, three hits remains afloat', () => {
+        ship = Ship(4)
+        ship.hit()
+        ship.hit()
+        ship.hit()
+        expect(ship.isSunk()).toBe(false)
+    })
+
+    it('(length 4) different length, four hits and sinks', () => {
+        ship = Ship(4)
+        ship.hit()
+        ship.hit()
+        ship.hit()
+        ship.hit()
+        expect(ship.isSunk()).toBe(true)
+    })
+
 });
 
 // --- GAMEBOARD ---
@@ -115,7 +146,7 @@ describe('Player', () => {
     });
 
     it('can attack enemy gameboard', () => {
-        const enemyPlayer = playerTwo.player
+        const enemyPlayer = playerTwo.board
         const receiveAttackSpy = jest.spyOn(enemyPlayer, 'receiveAttack')
         playerOne.attackEnemy(playerTwo, 0, 0)
         expect(receiveAttackSpy).toBeCalled()
@@ -128,7 +159,7 @@ describe('Player', () => {
 
     it('(ai) can successfully attack opponent', () => { // mock
 
-        const enemyPlayer = playerTwo.player
+        const enemyPlayer = playerTwo.board
         const aiAttackSpy = jest.spyOn(enemyPlayer, 'receiveAttack')
 
         playerOne.generateTargets()
