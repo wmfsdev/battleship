@@ -76,6 +76,40 @@ describe('Gameboard', () => {
         expect(board.getBoard()[0][0]).toBeInstanceOf(Object)
     })
 
+    it('(length 1) can *randomly* place one ship', () => {
+        board.placeShip(board.randomShipPlacement(), Ship(1))
+        const sample = board.getBoard()
+        //console.log(board.getBoard())
+        let object;
+        for (const prop of sample) {
+            for (const subProp of prop)
+           // console.log(prop)
+            if (subProp.hasOwnProperty('hit') ) {
+                object = subProp
+            //    console.log(object)
+            }
+        }
+        expect(object).toHaveProperty('length', 1)
+        expect(object).toHaveProperty('hit')
+        expect(board.getOccupiedPositions()).toHaveLength(1)
+    })
+
+    it('(length 3) can *randomly* place one ship', () => {
+        board.placeShip(board.randomShipPlacement(3), Ship(3))
+        const sample = board.getBoard()
+        let object;
+        for (const prop of sample) {
+            for (const subProp of prop)
+            if (subProp.hasOwnProperty('hit') ) {
+                object = subProp
+            }
+        }
+        expect(object).toHaveProperty('length', 3)
+        expect(object).toHaveProperty('hit')
+        expect(board.getOccupiedPositions()[0]).toHaveLength(3)
+    })
+
+
     it('can place ship of length three on board', () => {
         board.placeShip([[0, 0],[1, 1]], Ship(2) )
         expect(board.getBoard()[1][1]).toBeInstanceOf(Object)
