@@ -77,16 +77,14 @@ describe('Gameboard', () => {
     })
 
     it('(length 1) can *randomly* place one ship', () => {
-        board.placeShip(board.randomShipPlacement(), Ship(1))
+        board.placeShip(board.randomShipPlacement(1), Ship(1))
         const sample = board.getBoard()
-        //console.log(board.getBoard())
+        
         let object;
         for (const prop of sample) {
             for (const subProp of prop)
-           // console.log(prop)
-            if (subProp.hasOwnProperty('hit') ) {
-                object = subProp
-            //    console.log(object)
+                if (subProp.hasOwnProperty('hit') ) {
+                    object = subProp
             }
         }
         expect(object).toHaveProperty('length', 1)
@@ -107,6 +105,37 @@ describe('Gameboard', () => {
         expect(object).toHaveProperty('length', 3)
         expect(object).toHaveProperty('hit')
         expect(board.getOccupiedPositions()[0]).toHaveLength(3)
+    })
+
+    it('(length 1) can *randomly* place 99 ships', () => {
+        for (let i = 0 ; i < 99 ; i++) {
+            console.log(i)
+            board.placeShip(board.randomShipPlacement(1), Ship(1))
+        }
+        expect(board.getRandomStart()).toHaveLength(99)
+    })
+
+    it('(length 3) can *randomly* place 10 ships, no conflict', () => {
+        const shipNumber = 10
+        const shipLength = 3
+        // change number and length for alternative test scenarios
+        for (let i = 0 ; i < shipNumber ; i++) {
+            board.placeShip(board.randomShipPlacement(shipLength), Ship(shipLength))
+        }
+        const sample = board.getRandomStart()
+        const flatSample = sample.flat()
+        let duplicateCount = 0
+        flatSample.forEach(ele => {
+            for (let i = 0 ; i < flatSample.length ; i++) {
+                if (ele[0] === flatSample[i][0] && ele[1] === flatSample[i][1]) {
+                    duplicateCount++
+        // there will always be one duplication when comparing each element against
+        // all other elements in the the array - this factors in the duplication.
+        // if duplicateCount is off by even one there is a problem.
+                  }
+            }
+        });
+        expect(duplicateCount).toBe((shipNumber * shipLength)) 
     })
 
 
@@ -209,3 +238,4 @@ describe('Player', () => {
     })
 
 });
+

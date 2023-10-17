@@ -54,123 +54,57 @@ const Gameboard = () => { // will take player/comp name
         return true
     };
 
+    const getRandomStart = () => randomStart
 
     const randomShipPlacement = (length) => {
         let indexZero = getRandomInt(10)
         let indexOne = getRandomInt(10)
         let shipPosition = []
-        let check;
-
-        if (randomStart.length === 4) return
+        let shipCollision;
+    
+        if (randomStart.length === 100) return
 
         if (indexZero + length > 10) {
-            console.log("plus")
+        //    console.log("plus")
 
             for (let i = 0 ; i < length ; i++) {      
                 shipPosition.push([indexZero - i, indexOne])
             }
             const flatRandom = randomStart.flat()
 
-          //  if (randomStart.length === 0) {
-         //       randomStart.push(shipPosition)
-         //   } else {
-
                 for (let i = 0 ; i < shipPosition.length ; i++) {
                     for (let j = 0 ; j < flatRandom.length ; j++) {
                         if (flatRandom[j][0] === shipPosition[i][0] && flatRandom[j][1] === shipPosition[i][1]) {
-                            check = true
-                            console.log("clash")
-                            break
+                            shipCollision = true
                         }
                     }
                 }
-                if (!check) {
+                if (!shipCollision) {
                     randomStart.push(shipPosition)
                 } else randomShipPlacement(length)
-         //   }
 
         } else {
-            console.log("minus")
+        //    console.log("minus")
             
             for (let i = 0 ; i < length ; i++) {      
                 shipPosition.push([indexZero + i, indexOne])
             }
             const flatRandom = randomStart.flat()
-            console.log(randomStart, shipPosition)
-
-         //   if (randomStart.length === 0) {
-         //       randomStart.push(shipPosition)
-         //   } else {
 
                 for (let i = 0 ; i < shipPosition.length ; i++) {
                     for (let j = 0 ; j < flatRandom.length ; j++) {
                         if (flatRandom[j][0] === shipPosition[i][0] && flatRandom[j][1] === shipPosition[i][1]) {
-                            check = true
-                            console.log("clash")
-                            break
+                            shipCollision = true
                         }
                     }
                 }
-                if (!check) {
+                if (!shipCollision) {
                     randomStart.push(shipPosition)
                 } else randomShipPlacement(length)
-         //   }
         }
-        return randomStart
+        return shipPosition
     };
 
-    // const randomShipPlacement = (length) => {
-    //     let indexZero = getRandomInt(10)
-    //     let indexOne = getRandomInt(10)
-    //    // let shipPosition = []
-    //     console.log("==========")
-    //     console.log(indexZero, indexOne)
-    //     if (indexZero + length > 10) {
-    //         console.log("plus")
-
-    //         const positions = getPositions(length, "plus", indexZero, indexOne, )
-           
-    //         for (let i = 0 ; i < randomStart.length ; i++) {
-    //             for (let j = 0 ; j < positions.length ; j++) {
-    //                 if (randomStart[i][0] === positions[j][0] && randomStart[i][1] === positions[j][1]) {
-    //                     console.log("clash ", randomStart[i][0], positions[j][0], randomStart[i][1], positions[j][1])
-                    
-    //                 }
-    //             }
-    //         }
-    //         //     if (ele.includes(indexZero + 1) && ele.includes(indexOne)) {
-    //         //         console.log("clash", ele)
-    //         //         shipPosition = []
-    //         //         //randomShipPlacement(length)
-    //         //     }
-    //         // })
-    //         console.log("positions ", positions)
-    //         // const test = [...positions]
-    //         // console.log("test ", test)
-    //         randomStart.push(...positions)
-
-    //     } else {
-    //         console.log("minus")
-            
-    //         const positions = getPositions(length, "minus", indexZero, indexOne)
-
-    //         for (let i = 0 ; i < randomStart.length ; i++) {
-    //             for (let j = 0 ; j < positions.length ; j++) {
-    //                 if (randomStart[i][0] === positions[j][0] && randomStart[i][1] === positions[j][1]) {
-    //                     console.log("clash ", randomStart[i][0], positions[j][0], randomStart[i][1], positions[j][1])
-                   
-    //                 }
-    //             }
-    //         }
-
-    //         console.log("positions ", positions)
-    //         // const test = [...positions]
-    //         // console.log("test ", test)
-    //         randomStart.push(...positions)
-    //     }
-     
-    //     return randomStart
-    // };
 
     // const getPositions = (length, operator, indexZero = getRandomInt(10), indexOne = getRandomInt(10)) => {
     //     let shipPosition = []
@@ -205,13 +139,15 @@ const Gameboard = () => { // will take player/comp name
     };
 
     const placeShip = (shipPosition, ship) => { 
-        const flatShips = shipPosition.flat()
-        flatShips.forEach(position => {
-           
+        console.log(shipPosition)
+    //  const flatShips = shipPosition.flat()
+      shipPosition.forEach(position => {
+           console.log(position)
             board[position[0]][position[1]] = ship
+            
         });
         shipList.push(ship)
-        occupiedPositions.push(flatShips)
+        occupiedPositions.push(shipPosition)
     };
 
     const receiveAttack = (x, y) => {
@@ -228,9 +164,10 @@ const Gameboard = () => { // will take player/comp name
     const getBoard = () => board;
     const getShotsFired = () => shotsFired;
 
-    return { randomShipPlacement, getOccupiedPositions, getShipList, placeShip, getBoard, receiveAttack, getShotsFired, sunkenStatus }
+    return { getRandomStart, randomShipPlacement, getOccupiedPositions, getShipList, placeShip, getBoard, receiveAttack, getShotsFired, sunkenStatus }
 
 };
+
 
 const Player = () => {
 
@@ -247,16 +184,7 @@ const Player = () => {
     const generateTargets = () => {
         for (let i = 0 ; i < 10 ; i++) {
             for (let j = 0 ; j < 10 ; j++) {
-                vi   // shipPosition.forEach((pos) => {
-                    //     console.log(pos)
-                    //     flatRandom.forEach(ele => {
-                    //         console.log(ele)
-                    //         if (ele[0] !== pos[0] && ele[1] !== pos[1]) {
-                    //             console.log("push")
-                    //             randomStart.push(shipPosition)
-                    //         } else randomShipPlacement(length)
-                    //     });      
-                    // })ableTargets.push([i,j])
+                viableTargets.push([i,j])
             }
         } 
     };
