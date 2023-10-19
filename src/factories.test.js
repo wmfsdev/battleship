@@ -137,7 +137,6 @@ describe('Gameboard', () => {
         expect(duplicateCount).toBe((shipNumber * shipLength)) 
     })
 
-
     it('can place ship of length three on board', () => {
         board.placeShip([[0, 0],[1, 1]], Ship(2) )
         expect(board.getBoard()[1][1]).toBeInstanceOf(Object)
@@ -148,20 +147,17 @@ describe('Gameboard', () => {
         // Arrange
         let ship = Ship(3)
         const hitSpy = jest.spyOn(ship, 'hit')
-      
         // Act
         board.placeShip([[0, 0]], ship)
         board.receiveAttack(0, 0)
-      
         // Assert
         expect(hitSpy).toBeCalled()
-      })
-
+    })
 
     it('records missed shots', () => {
         board.placeShip([[1, 0]])
         board.receiveAttack(0, 0)
-        expect(board.getShotsFired()).toContainEqual([0, 0])
+        expect(board.getMissedShots()).toContainEqual([0, 0])
     })
 
     // it('has sunk a ship', () => { // REDUNDANT - already tested isSunk() in Ship suite
@@ -170,8 +166,7 @@ describe('Gameboard', () => {
     //     board.receiveAttack(0, 0)
     //     expect(board.getBoard()[0][0].isSunk()).toBe(true)
     // })
-    
-    
+     
     it('has all sunken ships on board (1 ship)', () => {
         board.placeShip([[0, 0],[0, 1]], Ship(2))
         board.receiveAttack(0, 0)
@@ -192,7 +187,6 @@ describe('Gameboard', () => {
         // Assert
         expect(board.sunkenStatus()).toBe(true)
     })
-
 })
 
 // --- PLAYERS ---
@@ -214,26 +208,29 @@ describe('Player', () => {
         expect(receiveAttackSpy).toBeCalled()
     })
 
-    it('can generate list of viable targets', () => { // possibly redundant
+    it('(ai) can generate list of viable targets', () => { // possibly redundant
         playerOne.generateTargets()
         expect(playerOne.getViableTargets()).toHaveLength(100)
     })
 
     it('(ai) can successfully attack opponent', () => { // mock
-
         const enemyPlayer = playerTwo.board
         const aiAttackSpy = jest.spyOn(enemyPlayer, 'receiveAttack')
-
         playerOne.generateTargets()
         playerOne.aiMove(playerTwo)
-
         expect(aiAttackSpy).toBeCalled()
     })
 
-    it('can remove correct target from target list', () => {
+    it('(ai) can remove correct target from target list', () => {
         playerOne.generateTargets()
         playerOne.removeViableTarget([0,0])
         expect(playerOne.getViableTargets()).not.toContain([0,0])
+    })
+
+    it('(human) cannot attack same board position more than once', () => {
+        playerOne.attackEnemy(playerTwo, 0, 0)
+        playerOne.board.updateBoard(playerTwo, [0, 0])
+        expect(playerTwo.board.getBoard()[0][0]).toBe(false)
     })
 
 });

@@ -1,11 +1,8 @@
-// import { Gameboard, Player } from "./factories"
-// import newGame from "./game"
 
 const render = {
 
     board: (player, type) => {
         const board = player.board.getBoard()
-
         const container = document.querySelector('.container')
         const playerBoard = document.createElement('div')
         playerBoard.classList.add(`board-${type}`)
@@ -19,9 +16,7 @@ const render = {
                 playerBoard.appendChild(cell)
             }
         }
-
         container.appendChild(playerBoard)
-    
     },
     
     ships: (player, shipList) => {
