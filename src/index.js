@@ -1,5 +1,5 @@
 import './style.css';
-import render from "./dom"
+//import render from "./dom"
 import newGame from "./game"
 
 
@@ -8,5 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     game.ship()
     game.dom()
     game.humanPlay()
-   // newGame.render()
+   
+    //  console.log(game.count)
+
 })

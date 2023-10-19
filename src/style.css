@@ -9,6 +9,7 @@ body {
     display: flex;
     justify-content: center;
     padding: 50px;
+    background-color: rgb(88, 89, 89);
 }
 
 .board-human,

@@ -30,26 +30,74 @@ const newGame = () => {
     render.ships("ai", playerTwo.board.getRandomStart())
   };
 
+  // const turn = () => {
+  //   if (turnState === true) {
+  //     turnState = false
+  //     humanPlay()
+  //     if (playerTwo.board.sunkenStatus() === true) {
+  //       console.log("you win")
+  //     return
+  //     }
+  //   } 
+    
+  //   if (turnState === false) {
+  //     aiPlay()
+  //     turnState = true
+  //     if (playerOne.board.sunkenStatus() === true) {
+  //       console.log("you lost")
+  //       return
+  //     }
+  //   } 
+  //   turn()
+  // };
+  
+
   const humanPlay = () => {
+  
+    console.log("--- HUMAN ----")
     const human = document.querySelector('.board-ai')
-    human.addEventListener('click', (e) => {
+    human.addEventListener('click', function eventHandler(e) {
       const coordinates = [Number(e.target.dataset.indexZero), Number(e.target.dataset.indexOne)]
       const target = playerTwo.board.getBoard()[coordinates[0]][coordinates[1]]
+   
       if (target === false) {
         console.log("nope!")
         return
       }
       playerOne.attackEnemy(playerTwo, coordinates[0], coordinates[1])
       playerOne.board.updateBoard(playerTwo, coordinates)
+
       render.hits(playerTwo, "ai")
       render.misses(playerTwo, "ai")
-      console.log(playerTwo.board.sunkenStatus())
-      // enemy move
+      human.removeEventListener('click', eventHandler)
+      if (playerTwo.board.sunkenStatus() === true) {
+        console.log("you win")
+        return
+      }
+      aiPlay()
+      
     })
   };
- 
 
-  return { ship, dom, humanPlay }
+  const aiPlay = () => {
+    console.log("--- AI ---")
+    if (playerTwo.getViableTargets().length === 0) {
+      playerTwo.generateTargets()
+    }
+    
+    playerTwo.aiMove(playerOne)
+
+    render.hits(playerOne, "human")
+    render.misses(playerOne, "human")
+
+    if (playerOne.board.sunkenStatus() === true) {
+      console.log("you lost")
+      return
+    }
+    humanPlay()
+  }
+  
+  return { ship, dom, humanPlay, aiPlay }
 };
 
 
