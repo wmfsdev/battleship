@@ -11,7 +11,8 @@ body {
     padding: 50px;
 }
 
-.board {
+.board-human,
+.board-ai {
     border-width: 1px;
     border-color: black;
     border-style: solid;
@@ -37,3 +38,12 @@ body {
 .ship {
     background-color: cadetblue;
 }
+
+.hit-ship {
+    background-color: brown;
+}
+
+.miss {
+    background-color: darkblue;
+}
+

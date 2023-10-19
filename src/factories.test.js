@@ -109,7 +109,6 @@ describe('Gameboard', () => {
 
     it('(length 1) can *randomly* place 99 ships', () => {
         for (let i = 0 ; i < 99 ; i++) {
-            console.log(i)
             board.placeShip(board.randomShipPlacement(1), Ship(1))
         }
         expect(board.getRandomStart()).toHaveLength(99)

@@ -4,6 +4,9 @@ import newGame from "./game"
 
 
 document.addEventListener('DOMContentLoaded', () => { 
-    newGame()
-   // render.board() 
+    const game = newGame()
+    game.ship()
+    game.dom()
+    game.humanPlay()
+   // newGame.render()
 })
