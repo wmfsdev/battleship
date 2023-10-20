@@ -11,11 +11,13 @@ const newGame = () => {
     playerOne.board.placeShip(playerOne.board.randomShipPlacement(4), Ship(4))
     playerOne.board.placeShip(playerOne.board.randomShipPlacement(3), Ship(3))
     playerOne.board.placeShip(playerOne.board.randomShipPlacement(3), Ship(3))
+    playerOne.board.placeShip(playerOne.board.randomShipPlacement(3), Ship(3))
     playerOne.board.placeShip(playerOne.board.randomShipPlacement(2), Ship(2))
     playerOne.board.placeShip(playerOne.board.randomShipPlacement(1), Ship(1))
     playerOne.board.placeShip(playerOne.board.randomShipPlacement(1), Ship(1))
     // Player Two - AI
     playerTwo.board.placeShip(playerTwo.board.randomShipPlacement(4), Ship(4))
+    playerTwo.board.placeShip(playerTwo.board.randomShipPlacement(3), Ship(3))
     playerTwo.board.placeShip(playerTwo.board.randomShipPlacement(3), Ship(3))
     playerTwo.board.placeShip(playerTwo.board.randomShipPlacement(3), Ship(3))
     playerTwo.board.placeShip(playerTwo.board.randomShipPlacement(2), Ship(2))

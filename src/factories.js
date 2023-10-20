@@ -63,45 +63,85 @@ const Gameboard = () => {
         let indexOne = getRandomInt(10)
         let shipPosition = []
         let shipCollision;
+        let axis = getRandomInt(2)
 
-        if (indexZero + length > 10) {
-        //    console.log("plus")
-            for (let i = 0 ; i < length ; i++) {      
-                shipPosition.push([indexZero - i, indexOne])
-            }
-            const flatRandom = randomStart.flat()
+        //  --- HORIZONTAL ---
 
-                for (let i = 0 ; i < shipPosition.length ; i++) {
-                    for (let j = 0 ; j < flatRandom.length ; j++) {
-                        if (flatRandom[j][0] === shipPosition[i][0] && flatRandom[j][1] === shipPosition[i][1]) {
-                        //  console.log("clash")
-                            shipCollision = true
-                        }
+        if (axis === 0) {
+            if (indexOne + length > 10) {
+                    for (let i = 0 ; i < length ; i++) {      
+                        shipPosition.push([indexZero, indexOne - i])
                     }
+                    const flatRandom = randomStart.flat()
+        
+                        for (let i = 0 ; i < shipPosition.length ; i++) {
+                            for (let j = 0 ; j < flatRandom.length ; j++) {
+                                if (flatRandom[j][0] === shipPosition[i][0] && flatRandom[j][1] === shipPosition[i][1]) {
+                                    shipCollision = true
+                                }
+                            }
+                        }
+                        if (!shipCollision) {
+                            randomStart.push(shipPosition)
+                        } else randomShipPlacement(length)
+        
+                } else {
+                    
+                    for (let i = 0 ; i < length ; i++) {      
+                        shipPosition.push([indexZero, indexOne + i])
+                    }
+                    const flatRandom = randomStart.flat()
+        
+                        for (let i = 0 ; i < shipPosition.length ; i++) {
+                            for (let j = 0 ; j < flatRandom.length ; j++) {
+                                if (flatRandom[j][0] === shipPosition[i][0] && flatRandom[j][1] === shipPosition[i][1]) {
+                                    shipCollision = true
+                                }
+                            }
+                        }
+                        if (!shipCollision) {
+                            randomStart.push(shipPosition)
+                        } else randomShipPlacement(length)
                 }
-                if (!shipCollision) {
-                    randomStart.push(shipPosition)
-                } else randomShipPlacement(length)
-
         } else {
-        //    console.log("minus")
-            
-            for (let i = 0 ; i < length ; i++) {      
-                shipPosition.push([indexZero + i, indexOne])
-            }
-            const flatRandom = randomStart.flat()
 
-                for (let i = 0 ; i < shipPosition.length ; i++) {
-                    for (let j = 0 ; j < flatRandom.length ; j++) {
-                        if (flatRandom[j][0] === shipPosition[i][0] && flatRandom[j][1] === shipPosition[i][1]) {
-                        //  console.log("clash")
-                            shipCollision = true
+        //  --- VERTICAL ---
+
+            if (indexZero + length > 10) {
+                for (let i = 0 ; i < length ; i++) {      
+                    shipPosition.push([indexZero - i, indexOne])
+                }
+                const flatRandom = randomStart.flat()
+
+                    for (let i = 0 ; i < shipPosition.length ; i++) {
+                        for (let j = 0 ; j < flatRandom.length ; j++) {
+                            if (flatRandom[j][0] === shipPosition[i][0] && flatRandom[j][1] === shipPosition[i][1]) {
+                                shipCollision = true
+                            }
                         }
                     }
+                    if (!shipCollision) {
+                        randomStart.push(shipPosition)
+                    } else randomShipPlacement(length)
+
+            } else {
+                
+                for (let i = 0 ; i < length ; i++) {      
+                    shipPosition.push([indexZero + i, indexOne])
                 }
-                if (!shipCollision) {
-                    randomStart.push(shipPosition)
-                } else randomShipPlacement(length)
+                const flatRandom = randomStart.flat()
+
+                    for (let i = 0 ; i < shipPosition.length ; i++) {
+                        for (let j = 0 ; j < flatRandom.length ; j++) {
+                            if (flatRandom[j][0] === shipPosition[i][0] && flatRandom[j][1] === shipPosition[i][1]) {
+                                shipCollision = true
+                            }
+                        }
+                    }
+                    if (!shipCollision) {
+                        randomStart.push(shipPosition)
+                    } else randomShipPlacement(length)
+            }
         }
 
         shipPosition = randomStart[randomStart.length - 1]
@@ -124,9 +164,9 @@ const Gameboard = () => {
         
         if (board[x][y] instanceof Object) {
             board[x][y].hit()
-            hitShips.push([x, y]) // hits
+            hitShips.push([x, y]) // HITS
         }
-        else missedShots.push([x, y]) // misses
+        else missedShots.push([x, y]) // MISSES
     };
 
     const updateBoard = (player, coordinates) => {
