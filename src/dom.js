@@ -1,3 +1,4 @@
+import newGame from "./game"
 
 const render = {
 
@@ -25,9 +26,9 @@ const render = {
             for (let i = 0 ; i < ship.length ; i++) {
             
                 let shipCell = document.querySelector(`.board-${player} .cell[data-index-zero='${ship[i][0]}'][data-index-one='${ship[i][1]}']`)
-               // if (player === "human") {
+                if (player === "human") {
                     shipCell.classList.add('ship')
-             //   }
+                }
             }
         });
     },
@@ -48,6 +49,37 @@ const render = {
             hitCell.classList.add('hit-ship')
         })
     },
+
+    result: (type) => {
+        const body = document.querySelector('body')
+        const result = document.createElement('div')
+        const button = document.createElement('button')
+
+        result.classList.add('result')
+        result.textContent = `${type} WINS!`
+        button.textContent = "New Game"
+
+        body.appendChild(result)
+        result.appendChild(button)
+
+        button.addEventListener('click', (e) => {
+            const game = newGame()
+            game.end()
+            game.ship()
+            game.dom()
+            game.humanPlay()
+        })
+    },
+
+    clearBoards: () => {
+        const container = document.querySelector('.container')
+        const playerOne = document.querySelector('.board-human')
+        const playerTwo = document.querySelector('.board-ai')
+        const result = document.querySelector('.result')
+        document.body.removeChild(result)
+        container.removeChild(playerOne)
+        container.removeChild(playerTwo)
+    }
 
 }
 

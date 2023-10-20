@@ -1,7 +1,6 @@
 import { Player, Ship } from "./factories"
 import render from "./dom"
 
-
 const newGame = () => {
 
   let playerOne = Player();
@@ -22,6 +21,7 @@ const newGame = () => {
     playerTwo.board.placeShip(playerTwo.board.randomShipPlacement(2), Ship(2))
     playerTwo.board.placeShip(playerTwo.board.randomShipPlacement(1), Ship(1))
     playerTwo.board.placeShip(playerTwo.board.randomShipPlacement(1), Ship(1))
+    // console.log(playerTwo.board.getBoard())
   };
 
   const dom = () => {
@@ -30,6 +30,7 @@ const newGame = () => {
     render.ships("human", playerOne.board.getRandomStart())
     render.ships("ai", playerTwo.board.getRandomStart())
   };
+
 
   const humanPlay = () => {
     console.log("--- HUMAN ----")
@@ -46,12 +47,9 @@ const newGame = () => {
       render.hits(playerTwo, "ai")
       render.misses(playerTwo, "ai")
       human.removeEventListener('click', eventHandler)
-      if (playerTwo.board.sunkenStatus() === true) {
-        console.log("you win")
+      if (checkWinCon(playerTwo, "HUMAN")) {
         return
-      }
-      aiPlay()
-      
+      } else aiPlay()
     })
   };
 
@@ -63,15 +61,29 @@ const newGame = () => {
     playerTwo.aiMove(playerOne)
     render.hits(playerOne, "human")
     render.misses(playerOne, "human")
-    if (playerOne.board.sunkenStatus() === true) {
-      console.log("you lost")
+    if (checkWinCon(playerOne, "AI")) {
       return
-    }
-    humanPlay()
+    } else humanPlay()
   };
-  
-  return { ship, dom, humanPlay, aiPlay }
-};
 
+  const checkWinCon = (player, type) => {
+    if (player.board.sunkenStatus() === true) {
+      render.result(type)
+      return true
+    }
+  }
+
+  const start = () => {
+    ship()
+    dom()
+    humanPlay()
+  }
+
+  const end = () => {
+    render.clearBoards()
+  }
+  
+  return { end, start, checkWinCon, ship, dom, humanPlay }
+};
 
 export default newGame

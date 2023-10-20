@@ -1,19 +1,26 @@
 
-* {
-    margin: 0px;
-    padding: 0px;
-    box-sizing: border-box;
-}
-
 body {
     display: flex;
     justify-content: center;
+    align-items: center;
+    flex-direction: column;
     padding: 50px;
-    background-color: rgb(88, 89, 89);
+    background-color: rgb(147, 176, 176);
+    gap: 50px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+h1 {
+    font-size: 3rem;
+    color:rgb(52, 87, 153)
+    
 }
 
 .board-human,
 .board-ai {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
     border-width: 1px;
     border-color: black;
     border-style: solid;
@@ -24,6 +31,25 @@ body {
     grid-template-rows: repeat(10, 1fr);
 }
 
+.result {
+    display: flex;
+    flex-direction: column;
+    font-size: 3rem;
+    gap: 20px;
+    align-items: center;
+    margin-top: 40px;
+    color:rgb(52, 87, 153)
+}
+
+.result button {
+    height: 35px;
+    width: 100px;
+    border-radius: 0.1rem;
+    border-color: rgb(52, 87, 153);
+    border-width: 1.5px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
 .container {
     display: flex;
     gap: 50px;
@@ -31,20 +57,18 @@ body {
 
 .cell {
     border-width: 1px;
-    border-color: rgba(0, 0, 0, 0.278);
+    border-color: rgba(113, 113, 113, 0.21);
     border-style: solid;
 }
-
 
 .ship {
     background-color: cadetblue;
 }
 
 .hit-ship {
-    background-color: brown;
+    background-color: rgba(161, 66, 66, 0.958);
 }
 
 .miss {
-    background-color: darkblue;
+    background-color: rgba(112, 113, 117, 0.713);
 }
-
